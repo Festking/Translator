@@ -38,6 +38,8 @@ async function translateText() {
         "nwanne m": "My sibling",
         "nna m": "My father",
         "nne m": "My mother"
+        "gaba": "go"
+        "bia": "come"
     };
 
     const customEnglishToIgbo = {};
