@@ -1,98 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Igbo-English Translator</title>
-  <style>
-    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
-    textarea { width: 100%; height: 100px; }
-    select, button { margin-top: 10px; padding: 10px; width: 100%; }
-    #outputText { margin-top: 20px; font-weight: bold; }
-  </style>
+    <meta charset="UTF-8">
+    <title>English ↔ Igbo Translator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2>Igbo ↔ English Translator</h2>
-  
-  <textarea id="inputText" placeholder="Enter text here..."></textarea>
-  <select id="languageDirection">
-    <option value="ig-en">Igbo → English</option>
-    <option value="en-ig">English → Igbo</option>
-  </select>
-  <button onclick="translateText()">Translate</button>
-  
-  <div id="outputText"></div>
-
-  <script>
-    const customIgboToEnglish = {
-      "ututu oma": "Good morning",
-      "ka chi fo": "Good night",
-      "kedu": "How are you?",
-      "kedu ka ime": "How are you?",
-      "daalụ": "Thank you",
-      "biko": "Please",
-      "anyị ga-ahụ echi": "See you tomorrow",
-      "nnọọ": "Welcome",
-      "ọ dị mma": "It’s okay",
-      "ọ dịghị ihe": "Nothing",
-      "lee anya": "Look",
-      "hapụ ya": "Leave it",
-      "anyị nwere ike ime ya": "We can do it",
-      "chukwu gozie gi": "God bless you",
-      "a na m ekele gi": "I thank you",
-      "ihe a dị mma": "This is good",
-      "ọ na-adị mma": "It is nice",
-      "nwanne m": "My sibling",
-      "nna m": "My father",
-      "nne m": "My mother"
-    };
-
-    const customEnglishToIgbo = {};
-    for (const [ig, en] of Object.entries(customIgboToEnglish)) {
-      customEnglishToIgbo[en.toLowerCase()] = ig;
-    }
-
-    async function translateText() {
-      const inputText = document.getElementById('inputText').value.trim();
-      const direction = document.getElementById('languageDirection').value;
-      const [source, target] = direction.split('-');
-      const outputDiv = document.getElementById('outputText');
-
-      if (!inputText) {
-        outputDiv.innerText = "Please enter text to translate.";
-        return;
-      }
-
-      outputDiv.innerText = "Translating...";
-
-      const lowerInput = inputText.toLowerCase();
-
-      // Handle Igbo → English from dictionary
-      if (source === "ig" && customIgboToEnglish[lowerInput]) {
-        outputDiv.innerText = customIgboToEnglish[lowerInput];
-        return;
-      }
-
-      // Handle English → Igbo from dictionary
-      if (source === "en" && customEnglishToIgbo[lowerInput]) {
-        outputDiv.innerText = customEnglishToIgbo[lowerInput];
-        return;
-      }
-
-      // Fallback: use MyMemory API
-      try {
-        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=${source}|${target}`);
-        const data = await response.json();
-
-        if (data.responseData.translatedText) {
-          outputDiv.innerText = data.responseData.translatedText;
-        } else {
-          outputDiv.innerText = "Translation failed. Try again.";
-        }
-      } catch (error) {
-        console.error("Translation Error:", error);
-        outputDiv.innerText = "An error occurred. Please check your connection.";
-      }
-    }
-  </script>
+    <div class="container">
+        <h1>English ↔ Igbo Translator</h1>
+        <textarea id="inputText" placeholder="Enter text here..."></textarea>
+        <select id="languageDirection">
+            <option value="en-ig">English to Igbo</option>
+            <option value="ig-en">Igbo to English</option>
+        </select>
+        <button onclick="translateText()">Translate</button>
+        <div id="outputText"></div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
