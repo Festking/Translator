@@ -8,13 +8,18 @@ async function translateText() {
         return;
     }
 
+    const proxyUrl = 'https://api.allorigins.win/get?url=';
+    const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=${source}|${target}`;
+
     try {
-        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=${source}|${target}`);
+        const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
 
-        if (!response.ok) throw new Error("Network response was not ok");
+        if (!response.ok) throw new Error("Proxy server error");
 
-        const data = await response.json();
+        const dataWrapped = await response.json();
+        const data = JSON.parse(dataWrapped.contents);
         const translated = data.responseData.translatedText;
+
         document.getElementById('outputText').innerText = translated;
     } catch (error) {
         document.getElementById('outputText').innerText = "❌ Translation failed: " + error.message;
