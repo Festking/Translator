@@ -37,8 +37,8 @@ async function translateText() {
         "ọ na-adị mma": "It is nice",
         "nwanne m": "My sibling",
         "nna m": "My father",
-        "nne m": "My mother"
-        "gaba": "go"
+        "nne m": "My mother",
+        "gaba": "go",
         "bia": "come"
     };
 
