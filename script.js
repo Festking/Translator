@@ -59,16 +59,8 @@ async function translateText() {
 
     // Fallback: Use LibreTranslate API
     try {
-        const response = await fetch('https://translate.argosopentech.com/translate', {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                q: inputText,
-                source: source,
-                target: target,
-                format: "text"
-            })
-        });
+        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=${source}|${target}`);
+
 
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
