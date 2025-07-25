@@ -37,9 +37,7 @@ async function translateText() {
         "ọ na-adị mma": "It is nice",
         "nwanne m": "My sibling",
         "nna m": "My father",
-        "nne m": "My mother",
-        "gaba": "go",
-        "bia": "come"
+        "nne m": "My mother"
     };
 
     const customEnglishToIgbo = {};
@@ -59,8 +57,16 @@ async function translateText() {
 
     // Fallback: Use LibreTranslate API
     try {
-        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=${source}|${target}`);
-
+        const response = await fetch('https://translate.argosopentech.com/translate', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                q: inputText,
+                source: source,
+                target: target,
+                format: "text"
+            })
+        });
 
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
@@ -78,3 +84,4 @@ async function translateText() {
         outputDiv.innerText = "An error occurred. Check your connection or try again later.";
     }
 }
+
