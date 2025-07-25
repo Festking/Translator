@@ -2,27 +2,40 @@ async function translateText() {
     const inputText = document.getElementById('inputText').value.trim();
     const direction = document.getElementById('languageDirection').value;
     const [source, target] = direction.split('-');
+    const outputDiv = document.getElementById('outputText');
 
     if (!inputText) {
-        document.getElementById('outputText').innerText = "Please enter some text.";
+        outputDiv.innerText = "Please enter text to translate.";
         return;
     }
 
-    const proxyUrl = 'https://api.allorigins.win/get?url=';
-    const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=${source}|${target}`;
+    outputDiv.innerText = "Translating...";
 
     try {
-        const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+        const response = await fetch('https://translate.argosopentech.com/translate', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                q: inputText,
+                source: source,
+                target: target,
+                format: "text"
+            })
+        });
 
-        if (!response.ok) throw new Error("Proxy server error");
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
 
-        const dataWrapped = await response.json();
-        const data = JSON.parse(dataWrapped.contents);
-        const translated = data.responseData.translatedText;
+        const data = await response.json();
 
-        document.getElementById('outputText').innerText = translated;
+        if (data && data.translatedText) {
+            outputDiv.innerText = data.translatedText;
+        } else {
+            outputDiv.innerText = "Translation failed. Please try again.";
+        }
     } catch (error) {
-        document.getElementById('outputText').innerText = "❌ Translation failed: " + error.message;
-        console.error(error);
+        console.error("Translation Error:", error);
+        outputDiv.innerText = "An error occurred. Check your connection or try again later.";
     }
 }
